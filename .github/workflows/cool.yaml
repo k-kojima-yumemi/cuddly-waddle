@@ -22,7 +22,7 @@ jobs:
     steps:
       - id: get-countries
         run: |
-          arr=$(${{inputs.countries}})
+          arr=(${{inputs.countries}})
           c='['
           for i in arr; do
             c="${c} \"${i}\""
