@@ -25,7 +25,7 @@ jobs:
         run: |
           arr=(${{inputs.countries}})
           c='['
-          for i in $arr[@] ; do
+          for i in ${arr[@]} ; do
             c="${c}\"${i}\""
           done
           c="${c}]"
