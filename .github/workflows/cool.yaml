@@ -4,15 +4,22 @@ on:
     inputs:
       target:
         type: choice
+        required: true
         options:
           - dev
           - stg
           - prod
+      countries:
+        type: string
+        required: false
 
 jobs:
   show-input:
     runs-on: ubuntu-latest
     timeout-minutes: 3
+    strategy:
+      matrix:
+        country: ${{input.countries || fromJson('["jp", "gb", "us"]')}}
     steps:
       - name: Echo Input
         run: echo $INPUT | jq
