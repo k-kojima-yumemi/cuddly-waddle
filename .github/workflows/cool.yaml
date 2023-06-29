@@ -10,35 +10,17 @@ on:
           - dev
           - stg
           - prod
-      countries:
+      country:
         type: string
         required: false
 
 jobs:
-  get-target-countries:
-    runs-on: ubuntu-latest
-    timeout-minutes: 3
-    outputs:
-      countries: steps.get-countries.outputs.countries
-    steps:
-      - id: get-countries
-        run: |
-          arr=(${{inputs.countries}})
-          c='['
-          for i in ${arr[@]} ; do
-            c="${c}\"${i}\""
-          done
-          c="${c}]"
-          echo "countries=${c}" >> $GITHUB_OUTPUT
-          echo "${c}"
-
   show-input:
     runs-on: ubuntu-latest
     timeout-minutes: 3
-    needs: [get-target-countries]
     strategy:
       matrix:
-        country: ${{ fromJson(needs.get-target-countries.outputs.countries || '["jp", "gb", "us"]' )}}
+        country: ${{ fromJson(format('["{0}"]', inputs.country) || '["jp", "gb", "us"]' )}}
     steps:
       - name: Echo Input
         run: echo $INPUT | jq
