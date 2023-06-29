@@ -1,0 +1,20 @@
+name: Cool
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        type: choice
+        options:
+          - dev
+          - stg
+          - prod
+
+jobs:
+  show-input:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Echo Input
+        run: echo $INPUT | jq
+        env:
+          INPUT: ${{toJson(inputs)}}
