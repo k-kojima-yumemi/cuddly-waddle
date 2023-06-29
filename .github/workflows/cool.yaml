@@ -19,7 +19,7 @@ jobs:
     timeout-minutes: 3
     strategy:
       matrix:
-        country: ${{fromJson(inputs.countries || '["jp", "gb", "us"]')}}
+        country: ${{fromJson(inputs.countries && format('["{0}"]', inputs.countries) || '["jp", "gb", "us"]')}}
     steps:
       - name: Echo Input
         run: echo $INPUT | jq
