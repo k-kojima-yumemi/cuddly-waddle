@@ -14,6 +14,22 @@ on:
         required: false
 
 jobs:
+  get-target-countries:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    outputs:
+      countries: steps.get-countries.outputs.countries
+    steps:
+      - id: get-countries
+        run: |
+          arr=$(${{inputs.countries}})
+          c='['
+          for i in arr; do
+            c="${c} \"${i}\""
+          done
+          c="${c}]"
+          echo "countries=${c}" >> $GITHUB_OUTPUT
+
   show-input:
     runs-on: ubuntu-latest
     timeout-minutes: 3
