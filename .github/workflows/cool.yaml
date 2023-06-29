@@ -25,8 +25,8 @@ jobs:
         run: |
           arr=(${{inputs.countries}})
           c='['
-          for i in $arr; do
-            c="${c} \"${i}\""
+          for i in $arr[@] ; do
+            c="${c}\"${i}\""
           done
           c="${c}]"
           echo "countries=${c}" >> $GITHUB_OUTPUT
