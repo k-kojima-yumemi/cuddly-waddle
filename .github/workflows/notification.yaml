@@ -1,0 +1,19 @@
+name: Notification
+
+on:
+  pull_request:
+    types: [opened, reopened, ready_for_review, closed]
+  issues:
+    types: [opened, reopened, closed]
+  pull_request_review:
+    types: [submitted]
+  issue_comment:
+    types: [created]
+  push:
+
+jobs:
+  notification:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - run: echo ${{github.event_name}}
