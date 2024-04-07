@@ -2,7 +2,7 @@ name: Notification
 
 on:
   pull_request:
-    types: [opened, reopened, ready_for_review, closed]
+    types: [opened, reopened, ready_for_review, closed, synchronize]
   issues:
     types: [opened, reopened, closed]
   pull_request_review:
@@ -13,7 +13,27 @@ on:
 
 jobs:
   notification:
+    permissions: 
+      actions: write
+      issues: write
+      pull-requests: write
     runs-on: ubuntu-latest
     timeout-minutes: 3
     steps:
       - run: echo ${{github.event_name}}
+      - run: echo ${{github.event_name}} >> a.txt
+      - uses: actions/upload-artifact@v4
+        id: artifact
+        with:
+          name: A
+          path: a.txt
+          retention-days: 1
+      - name: Add pr comment
+        if: ${{ github.event.pull_request.html_url != '' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh pr comment ${{ github.event.pull_request.html_url }} -F - <<EOF
+          Download from [this link](${{ steps.artifact.outputs.artifact-url }}).
+          ID: ${{ steps.artifact.outputs.artifact-id }}
+          EOF
